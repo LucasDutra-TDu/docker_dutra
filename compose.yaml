@@ -1,0 +1,11 @@
+services:
+  clientemqtt:
+    build: ./clienteMqtt/
+    container_name: clienteMqtt
+    environment:
+      - TZ=America/Argentina/Buenos_Aires 
+      - servidor=${SERVIDOR} #Se reemplazará por la env var SERVIDOR defineda en .env
+      - topico_out1=${TOPICO_OUT1}
+      - topico_out2=${TOPICO_OUT2}
+      - topico_cont=${TOPICO_CONT}
+    restart: unless-stopped
