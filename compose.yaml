@@ -9,3 +9,4 @@ services:
       - topico_out2=${TOPICO_OUT2}
       - topico_cont=${TOPICO_CONT}
     restart: unless-stopped
+    
