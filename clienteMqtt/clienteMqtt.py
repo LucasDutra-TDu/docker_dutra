@@ -34,7 +34,6 @@ async def incrementar_contador(estado):
     while True:
         await asyncio.sleep(3)
         estado['contador'] += 1
-        # Se puede omitir este log si solo quieres ver la publicación, pero sirve para depurar
         logging.info(f"Contador interno incrementado a {estado['contador']}")
 
 async def publicar_contador(client, topic, estado):
@@ -100,5 +99,4 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        # Captura de ctrl-c
-        print("mqtt final")
+        print("Interrupción de teclado.")
