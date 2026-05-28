@@ -3,6 +3,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandl
 import logging, os, asyncio, aiomysql, traceback, locale
 
 token=os.environ["TB_TOKEN"]
+gif="CgACAgEAAxkBAAMdahiJ0yZOpRCPMpD6rZur7mLD3oYAArIGAAKyu8hEsnmuSELvqEc7BA"
 
 logging.basicConfig(format='%(asctime)s - TelegramBot - %(levelname)s - %(message)s', level=logging.INFO)
 logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -26,7 +27,7 @@ async def acercade(update: Update, context):
 async def kill(update: Update, context):
     logging.info(context.args)
     if context.args and context.args[0] == '@e':
-        await context.bot.send_animation(update.message.chat.id, "CgACAgEAAxkBAAICI2oYKdAqh4YkBCLifiVJZlRXy74-AAKUBwACZ_PBRLgV_qZf-9kGOwQ")
+        await context.bot.send_animation(update.message.chat.id, gif)
         await asyncio.sleep(6)
         await context.bot.send_message(update.message.chat.id, text="¡¡¡Ahora estan todos muertos!!!")
     else:
