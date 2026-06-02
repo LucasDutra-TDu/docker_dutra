@@ -13,7 +13,7 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 
 # --- Publicar Órdenes vía MQTTS ---
 async def publicar_orden(subtopico: str, mensaje: str):
-    """Establece una conexión rápida por MQTTS y publica la orden al termostato."""
+    """Establece una conexión MQTTS y publica la orden al termostato."""
     tls_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
     tls_context.verify_mode = ssl.CERT_REQUIRED
     tls_context.check_hostname = True
@@ -51,8 +51,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     mensaje = (
         f"Bienvenido al Bot {nombre} {apellido}\n\n"
-        "📊 **Consultas a DB:** Usá las dos primeras filas de botones.\n"
-        "⚙️ **Control del Termostato:** Usá los botones inferiores o comandos:\n"
         "• `/setpoint [valor]` - Ej: `/setpoint 24.5`\n"
         "• `/periodo [segundos]` - Ej: `/periodo 10`"
     )
