@@ -131,39 +131,39 @@ async def cambiar_modo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     texto = update.message.text
     modo = "auto" if "Auto" in texto else "manual"
     await publicar_orden("modo", modo)
-    await update.message.reply_text(f"⚙️ Orden enviada: Modo cambiado a `{modo}`", parse_mode="Markdown")
+    await update.message.reply_text(f"Orden enviada: Modo cambiado a `{modo}`", parse_mode="Markdown")
 
 async def cambiar_rele(update: Update, context: ContextTypes.DEFAULT_TYPE):
     texto = update.message.text
     estado = "1" if "ON" in texto else "0"
     await publicar_orden("rele", estado)
-    await update.message.reply_text(f"🔌 Orden enviada: Estado del relé seteado en `{estado}`", parse_mode="Markdown")
+    await update.message.reply_text(f"Orden enviada: Relé seteado en `{estado}`", parse_mode="Markdown")
 
 async def solicitar_destello(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await publicar_orden("destello", "ping")
-    await update.message.reply_text("⚡ Comando enviado: Destellar LED perimetral.")
+    await update.message.reply_text("Comando enviado: Destellar LED")
 
 async def set_setpoint(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.args:
         try:
             valor = float(context.args[0])
             await publicar_orden("setpoint", str(valor))
-            await update.message.reply_text(f"🎯 Setpoint enviado correctamente: `{valor} ºC`", parse_mode="Markdown")
+            await update.message.reply_text(f"Setpoint modificado correctamente: `{valor} ºC`", parse_mode="Markdown")
         except ValueError:
             await update.message.reply_text("❌ Error: El setpoint debe ser un número decimal válido (Ej: 24.5).")
     else:
-        await update.message.reply_text("⚠️ Uso correcto: `/setpoint 25.0`")
+        await update.message.reply_text("Uso correcto: `/setpoint 25.0`")
 
 async def set_periodo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.args:
         try:
             valor = int(context.args[0])
             await publicar_orden("periodo", str(valor))
-            await update.message.reply_text(f"⏱️ Periodo enviado correctamente: `{valor} segundos`", parse_mode="Markdown")
+            await update.message.reply_text(f"Periodo modificado correctamente: `{valor} segundos`", parse_mode="Markdown")
         except ValueError:
-            await update.message.reply_text("❌ Error: El periodo debe ser un entero de segundos.")
+            await update.message.reply_text("Error: El periodo debe ser un entero de segundos.")
     else:
-        await update.message.reply_text("⚠️ Uso correcto: `/periodo 15`")
+        await update.message.reply_text("Uso correcto: `/periodo 15`")
 
 
 def main():
