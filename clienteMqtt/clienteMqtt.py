@@ -11,7 +11,7 @@ async def main():
     tls_context.load_default_certs()
 
     async with aiomqtt.Client(
-        os.environ["SERVIDOR"],
+        os.environ["SERV_MQTT"],
         username=os.environ["MQTT_USR"],
         password=os.environ["MQTT_PASS"],
         port=int(os.environ["PUERTO_MQTTS"]),
