@@ -16,6 +16,7 @@ async def main():
         password=os.environ["MQTT_PASS"],
         port=int(os.environ["PUERTO_MQTTS"]),
         tls_context=tls_context,
+        identifier="TITAN",
     ) as client:
         await client.subscribe(os.environ['TOPICO'])
         async for message in client.messages:

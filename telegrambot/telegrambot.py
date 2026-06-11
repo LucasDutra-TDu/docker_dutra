@@ -21,11 +21,10 @@ async def publicar_orden(subtopico: str, mensaje: str):
 
     try:
         async with aiomqtt.Client(
-            os.environ["SERV_MQTT"],
+            hostname="mosquitto",
             username=os.environ["MQTT_USR"],
             password=os.environ["MQTT_PASS"],
-            port=int(os.environ["PUERTO_MQTTS"]),
-            tls_context=tls_context,
+            port=1883
         ) as client:
             topico_completo = f"{DEVICE_ID}/{subtopico}"
             await client.publish(topico_completo, payload=str(mensaje))
