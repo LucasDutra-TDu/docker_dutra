@@ -4,6 +4,8 @@ import os, logging
 from functools import wraps
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import check_password_hash, generate_password_hash
+import ssl
+import paho.mqtt.client as mqtt
 
 logging.basicConfig(format='%(asctime)s - CRUD - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -145,3 +147,41 @@ def logout():
     session.clear()
     logging.info("el usuario {} cerró su sesión".format(session.get("user_id")))
     return redirect(url_for('index'))
+
+def publicar_orden(dispositivo: str, comando: str, mensaje: str):
+    """Establece una conexión MQTTS y publica la orden."""
+    tls_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    tls_context.verify_mode = ssl.CERT_REQUIRED
+    tls_context.check_hostname = True
+    tls_context.load_default_certs()
+
+    try:
+        topico_completo = f"{dispositivo}/{comando}"
+        client = mqtt.Client()
+        client.username_pw_set(os.environ.get("MQTT_USR", ""), os.environ.get("MQTT_PASS", ""))
+        client.connect("mosquitto", 1883, 60)
+        client.publish(topico_completo, str(mensaje))
+        client.disconnect()
+        logging.info(f"MQTT Publicado -> {topico_completo}: {mensaje}")
+    except Exception as e:
+        logging.error(f"Error al publicar en MQTT: {e}")
+
+@app.route('/control_nodos', methods=['GET', 'POST'])
+@require_login
+def control_nodos():
+    nodos = ["TERMOSTATO_DUTRA", "sensor_1"]
+    if request.method == 'POST':
+        nodo = request.form.get("nodo")
+        comando = request.form.get("comando")
+        if nodo in nodos:
+            if comando == "destello":
+                publicar_orden(nodo, "destello", "ping")
+                flash(f"Destello enviado a {nodo}")
+            elif comando == "setpoint":
+                valor = request.form.get("valor")
+                if valor:
+                    publicar_orden(nodo, "setpoint", valor)
+                    flash(f"Setpoint enviado a {nodo}")
+        return redirect(url_for("control_nodos"))
+    return render_template('control.html', nodos=nodos)
+
